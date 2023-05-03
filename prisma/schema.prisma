@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  SUPPORT
+  CONTENT_MANAGER
+  TEL_SUPPORT
+}
+
+enum PlatformLabel {
+  UNI
+  BOARD
+  GOVT
+  ENTRANCE
+}
+
+model DashBoardUser {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  image     String?
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+}
+
+model CourseType {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  index      Int
+  type       String
+  active     Boolean  @default(false)
+  platform   Platform @relation(fields: [platformId], references: [id], onDelete: Cascade)
+  platformId String   @db.ObjectId
+  Course     Course[]
+}
+
+model Platform {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  label       PlatformLabel
+  name        String        @unique
+  subTitle    String
+  image       String?       @default("")
+  active      Boolean       @default(false)
+  courseTypes CourseType[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Course      Course[]
+}
+
+model Course {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  image        String?
+  top          Boolean    @default(false)
+  color        String     @default("#0C8261")
+  active       Boolean    @default(false)
+  paid         Boolean    @default(false)
+  showTimer    Boolean    @default(false)
+  rating       Float      @default(4.5)
+  platform     Platform   @relation(fields: [platformName], references: [name])
+  platformName String
+  courseType   CourseType @relation(fields: [courseTypeId], references: [id])
+  courseTypeId String     @db.ObjectId
+}
