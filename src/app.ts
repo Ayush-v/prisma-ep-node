@@ -3,7 +3,6 @@ import { Prisma } from "@prisma/client";
 import dotenv from "dotenv";
 import morgan from "morgan";
 const app: Application = express();
-import { prisma } from "./prisma";
 
 import { default as dashboardRoutes } from "./dashboardRoutes";
 import { default as mobileApi } from "./mobileRoutes";
