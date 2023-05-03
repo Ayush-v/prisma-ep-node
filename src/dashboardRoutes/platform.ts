@@ -1,7 +1,6 @@
 import { Router } from "express";
 const router = Router();
 import { prisma } from "../prisma";
-import { type } from "os";
 import { Prisma } from "@prisma/client";
 
 router.get("/", async (_, res) => {
@@ -13,13 +12,6 @@ router.get("/", async (_, res) => {
 
   res.json({ message: "All Platforms", data: allPlatforms });
 });
-
-// type CourseType = {
-//   id: string;
-//   index: number;
-//   type: string;
-//   active: boolean;
-// };
 
 router
   .route("/edit/:id")

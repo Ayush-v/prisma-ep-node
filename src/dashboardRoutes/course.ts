@@ -2,6 +2,7 @@ import { Router } from "express";
 const router = Router();
 import { prisma } from "../prisma";
 
+// Get All Course
 router.get("/:platformName", async (req, res) => {
   const { platformName } = req.params;
 
