@@ -25,6 +25,12 @@ enum PlatformLabel {
   ENTRANCE
 }
 
+enum LayoutType {
+  LAYOUT_1
+  LAYOUT_2
+  LAYOUT_3
+}
+
 model DashBoardUser {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
@@ -72,4 +78,15 @@ model Course {
   platformName String
   courseType   CourseType @relation(fields: [courseTypeId], references: [id])
   courseTypeId String     @db.ObjectId
+  Modules      Modules[]
+}
+
+model Modules {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  image      String?
+  active     Boolean    @default(false)
+  layoutType LayoutType
+  course     Course     @relation(fields: [courseId], references: [id])
+  courseId   String     @db.ObjectId
 }
