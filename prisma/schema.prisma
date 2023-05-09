@@ -94,6 +94,7 @@ model Modules {
   Layout1    Layout1[]
   Layout2    Layout2[]
   Semester   Semester[]
+  layout3    layout3[]
 }
 
 model Semester {
@@ -160,8 +161,9 @@ type Layout3Unit {
 
 model layout3 {
   id       String        @id @default(auto()) @map("_id") @db.ObjectId
-  module   String[]
   semester String        @db.ObjectId
   subject  String        @db.ObjectId
   unit     Layout3Unit[]
+  module   Modules       @relation(fields: [moduleId], references: [id])
+  moduleId String        @db.ObjectId
 }
