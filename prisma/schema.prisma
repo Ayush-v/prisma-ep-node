@@ -89,4 +89,36 @@ model Modules {
   layoutType LayoutType
   course     Course     @relation(fields: [courseId], references: [id])
   courseId   String     @db.ObjectId
+  Layout1    Layout1[]
+  Layout2    Layout2[]
+}
+
+model Layout1 {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  semester String
+  subject  String
+  pdf      String? @db.ObjectId
+  active   Boolean @default(false)
+  paid     Boolean @default(false)
+  showAd   Boolean @default(false)
+  module   Modules @relation(fields: [moduleId], references: [id])
+  moduleId String  @db.ObjectId
+}
+
+type Layout2Content {
+  id     String  @map("_id") @db.ObjectId
+  active Boolean
+  paid   Boolean
+  pdf    String? @db.ObjectId
+  showAd Boolean
+  year   String
+}
+
+model Layout2 {
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  semester String
+  subject  String
+  content  Layout2Content[]
+  module   Modules          @relation(fields: [moduleId], references: [id])
+  moduleId String           @db.ObjectId
 }
