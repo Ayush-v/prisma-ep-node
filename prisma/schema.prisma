@@ -79,6 +79,8 @@ model Course {
   courseType   CourseType @relation(fields: [courseTypeId], references: [id])
   courseTypeId String     @db.ObjectId
   Modules      Modules[]
+  Semester     Semester[]
+  Subject      Subject[]
 }
 
 model Modules {
@@ -91,6 +93,24 @@ model Modules {
   courseId   String     @db.ObjectId
   Layout1    Layout1[]
   Layout2    Layout2[]
+  Semester   Semester[]
+}
+
+model Semester {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  module   Modules @relation(fields: [moduleId], references: [id])
+  moduleId String  @db.ObjectId
+  course   Course  @relation(fields: [courseId], references: [id])
+  courseId String  @db.ObjectId
+}
+
+model Subject {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  image    String?
+  course   Course  @relation(fields: [courseId], references: [id])
+  courseId String  @db.ObjectId
 }
 
 model Layout1 {
@@ -121,4 +141,27 @@ model Layout2 {
   content  Layout2Content[]
   module   Modules          @relation(fields: [moduleId], references: [id])
   moduleId String           @db.ObjectId
+}
+
+type Layout3UnitContent {
+  id     String  @map("_id") @db.ObjectId
+  active Boolean
+  paid   Boolean
+  pdf    String? @db.ObjectId
+  showAd Boolean
+  year   String
+}
+
+type Layout3Unit {
+  id       String               @map("_id") @db.ObjectId
+  content  Layout3UnitContent[]
+  unitName String
+}
+
+model layout3 {
+  id       String        @id @default(auto()) @map("_id") @db.ObjectId
+  module   String[]
+  semester String        @db.ObjectId
+  subject  String        @db.ObjectId
+  unit     Layout3Unit[]
 }
